@@ -8,6 +8,28 @@ This document provides comprehensive instructions for running the Tangy Mango we
 
 - Docker (20.10+)
 - Docker Compose v2 (or `docker compose` command)
+- Rust and Cargo (for local builds to avoid SSL issues)
+
+### Automated Setup (Recommended)
+
+The easiest way to get started is using the provided setup script:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd tangy-mango
+
+# Run the automated setup script
+./docker-setup.sh
+```
+
+This script will:
+1. Build the Rust project locally
+2. Prepare the Docker context
+3. Build and start all services
+4. Verify everything is working
+
+### Manual Setup
 
 ### Option 1: Using Pre-built Configuration (Recommended)
 
@@ -194,11 +216,15 @@ curl http://localhost:8080/api/v1/users/{id}
 
 ## Troubleshooting
 
+## Troubleshooting
+
 ### Common Issues
 
 1. **Build failures due to SSL certificates**:
-   - Use Option 1 (pre-built binary approach)
-   - Or configure Docker daemon with proper certificates
+   - **Problem**: Docker build fails with SSL certificate errors when downloading Rust crates
+   - **Solution**: Use the pre-built binary approach with `docker-setup.sh` script
+   - **Alternative**: Use Option 1 (pre-built binary approach) manually
+   - **Details**: This is a common issue in certain environments where SSL certificates aren't properly configured
 
 2. **Port conflicts**:
    - Modify port mappings in `docker-compose.yml`
@@ -211,6 +237,11 @@ curl http://localhost:8080/api/v1/users/{id}
 4. **Permission errors**:
    - Verify file ownership: `ls -la`
    - Rebuild image: `docker compose build --no-cache`
+
+5. **Config file not found errors**:
+   - **Problem**: Application can't find Config.toml
+   - **Solution**: Ensure `Config.docker.toml` exists and is properly mounted
+   - **Check**: Verify docker-compose.yml volume mount is correct
 
 ### Debugging
 
