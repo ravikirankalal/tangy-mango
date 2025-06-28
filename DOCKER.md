@@ -35,7 +35,7 @@ This script will:
 
 If you encounter Docker build issues due to network/SSL certificate problems in your environment:
 
-1. **Clone and build locally first**:
+1. **Build the Rust project locally**:
    ```bash
    git clone <repository-url>
    cd tangy-mango
@@ -47,21 +47,20 @@ If you encounter Docker build issues due to network/SSL certificate problems in 
    cp target/release/tangy-mango ./tangy-mango-binary
    ```
 
-3. **Use the simplified Dockerfile**:
-   ```dockerfile
-   FROM debian:bookworm-slim
-   RUN apt-get update && apt-get install -y ca-certificates libssl3 curl && rm -rf /var/lib/apt/lists/*
-   RUN useradd -r -s /bin/false tangy-mango
-   WORKDIR /app
-   COPY tangy-mango-binary ./tangy-mango
-   COPY Config.toml migrations ./
-   RUN chown -R tangy-mango:tangy-mango /app && chmod +x tangy-mango
+3. **Build and start with Docker Compose**:
+   ```bash
+   docker compose up --build -d
+   ```
+
+This approach avoids SSL certificate issues by building the Rust dependencies locally first, then using the pre-built binary in a lightweight Docker container.
    USER tangy-mango
    EXPOSE 8080
    CMD ["./tangy-mango"]
    ```
 
 ### Option 2: Standard Docker Build
+
+If your environment doesn't have SSL certificate issues, you can use the standard approach:
 
 ```bash
 # Start with PostgreSQL (default)
@@ -70,6 +69,8 @@ If you encounter Docker build issues due to network/SSL certificate problems in 
 # Or start with MySQL
 ./docker.sh start-mysql
 ```
+
+Note: If you encounter SSL certificate errors during the Docker build process, use Option 1 or the automated setup script instead.
 
 ## Available Services
 
