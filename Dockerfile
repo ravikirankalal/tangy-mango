@@ -1,34 +1,4 @@
-# Multi-stage build for Rust web service
-FROM rust:1.82-slim AS builder
-
-# Install build dependencies
-RUN apt-get update && apt-get install -y \
-    pkg-config \
-    libssl-dev \
-    ca-certificates \
-    && update-ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create app directory
-WORKDIR /app
-
-# Copy dependency files first for better caching
-COPY Cargo.toml Cargo.lock ./
-
-# Create a dummy main.rs to build dependencies
-RUN mkdir src && echo "fn main() {}" > src/main.rs && echo "" > src/lib.rs
-
-# Build dependencies
-RUN cargo build --release && rm -rf src
-
-# Copy source code
-COPY src ./src
-COPY migrations ./migrations
-
-# Build the application
-RUN cargo build --release
-
-# Runtime stage
+# Use pre-built binary approach to avoid SSL certificate issues
 FROM debian:bookworm-slim
 
 # Install runtime dependencies
@@ -44,15 +14,14 @@ RUN useradd -r -s /bin/false tangy-mango
 # Create app directory
 WORKDIR /app
 
-# Copy the binary from builder stage
-COPY --from=builder /app/target/release/tangy-mango ./tangy-mango
+# Copy the pre-built binary from local build
+COPY tangy-mango-binary ./tangy-mango
 
-# Copy configuration and migrations
-COPY Config.toml ./Config.toml
+# Copy migrations (config will be mounted via docker-compose)
 COPY migrations ./migrations
 
-# Change ownership to app user
-RUN chown -R tangy-mango:tangy-mango /app
+# Change ownership to app user and make binary executable
+RUN chown -R tangy-mango:tangy-mango /app && chmod +x tangy-mango
 
 # Switch to app user
 USER tangy-mango

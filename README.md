@@ -142,22 +142,29 @@ The application can be easily run using Docker and Docker Compose, with support 
    cd tangy-mango
    ```
 
-2. **Start with PostgreSQL (recommended)**:
+2. **Use the automated setup script (recommended)**:
+   ```bash
+   ./docker-setup.sh
+   ```
+
+3. **Or start manually with PostgreSQL**:
    ```bash
    ./docker.sh start
    ```
 
-3. **Or start with MySQL**:
+4. **Or start with MySQL**:
    ```bash
    ./docker.sh start-mysql
    ```
 
-4. **Test the API**:
+5. **Test the API**:
    ```bash
    ./docker.sh test
    ```
 
 The application will be available at `http://localhost:8080`.
+
+**Note**: If you encounter SSL certificate issues during Docker builds, the automated setup script (`docker-setup.sh`) handles this by building locally first.
 
 ### Docker Commands
 
