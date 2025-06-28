@@ -130,7 +130,101 @@ database_name = "tangy_mango"
 max_connections = 10
 ```
 
-## Development
+## 🐳 Docker Setup
+
+The application can be easily run using Docker and Docker Compose, with support for both PostgreSQL and MySQL databases.
+
+### Quick Start with Docker
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd tangy-mango
+   ```
+
+2. **Start with PostgreSQL (recommended)**:
+   ```bash
+   ./docker.sh start
+   ```
+
+3. **Or start with MySQL**:
+   ```bash
+   ./docker.sh start-mysql
+   ```
+
+4. **Test the API**:
+   ```bash
+   ./docker.sh test
+   ```
+
+The application will be available at `http://localhost:8080`.
+
+### Docker Commands
+
+The `docker.sh` script provides convenient commands:
+
+- `./docker.sh start` - Start with PostgreSQL
+- `./docker.sh start-mysql` - Start with MySQL  
+- `./docker.sh stop` - Stop all services
+- `./docker.sh restart` - Restart services
+- `./docker.sh logs` - View application logs
+- `./docker.sh logs-db` - View database logs
+- `./docker.sh shell` - Open shell in app container
+- `./docker.sh db-shell` - Open database shell
+- `./docker.sh clean` - Remove containers and volumes
+- `./docker.sh status` - Show service status
+
+### Manual Docker Compose
+
+You can also use Docker Compose directly:
+
+```bash
+# Start with PostgreSQL
+docker compose up -d tangy-mango-api postgres
+
+# Start with MySQL
+docker compose --profile mysql up -d tangy-mango-api mysql
+
+# With admin tools (pgAdmin/phpMyAdmin)
+docker compose --profile tools up -d
+
+# View logs
+docker compose logs -f tangy-mango-api
+
+# Stop services
+docker compose down
+```
+
+### Database Access
+
+**PostgreSQL**:
+- Host: `localhost:5432`
+- Database: `tangy_mango` 
+- User: `postgres`
+- Password: `password`
+- pgAdmin: `http://localhost:5050` (admin@tangy-mango.com / admin)
+
+**MySQL** (when using MySQL profile):
+- Host: `localhost:3306`
+- Database: `tangy_mango`
+- User: `tangy_user`
+- Password: `password`
+- phpMyAdmin: `http://localhost:8081`
+
+### Environment Configuration
+
+Copy `.env.example` to `.env` and modify as needed:
+
+```bash
+cp .env.example .env
+```
+
+## Local Development
+
+### Prerequisites
+
+- Rust (1.75+)
+- PostgreSQL (13+) or MySQL (8.0+)
 
 ### Building
 ```bash
@@ -140,6 +234,15 @@ cargo build
 ### Running in development mode with logs
 ```bash
 RUST_LOG=info cargo run
+```
+
+### Testing
+```bash
+# Run unit tests
+cargo test
+
+# Run API tests (requires running server)
+./test-api.sh
 ```
 
 ### Checking code

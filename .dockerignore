@@ -1,0 +1,37 @@
+# Ignore build artifacts and dependencies
+target/
+# Note: Don't ignore Cargo.lock as it's needed for reproducible builds
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.iml
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore test files
+test-api.sh
+tests/
+
+# Ignore documentation
+README.md
+TESTING.md
+LICENSE
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore environment files
+.env*
+
+# Ignore log files
+*.log
