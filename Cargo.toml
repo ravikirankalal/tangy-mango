@@ -3,6 +3,14 @@ name = "tangy-mango"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "tangy_mango"
+path = "src/lib.rs"
+
+[[bin]]
+name = "tangy-mango"
+path = "src/main.rs"
+
 [dependencies]
 # Web framework
 actix-web = "4.4"
@@ -31,3 +39,7 @@ thiserror = "1.0"
 # Logging
 log = "0.4"
 env_logger = "0.10"
+
+[dev-dependencies]
+# Testing
+tokio-test = "0.4"
