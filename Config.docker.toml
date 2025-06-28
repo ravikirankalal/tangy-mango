@@ -1,0 +1,11 @@
+[server]
+host = "0.0.0.0"  # Listen on all interfaces inside container
+port = 8080
+
+[database]
+host = "postgres"  # Use Docker service name
+port = 5432
+username = "postgres"
+password = "password"
+database_name = "tangy_mango"
+max_connections = 10

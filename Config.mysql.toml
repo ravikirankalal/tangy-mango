@@ -1,0 +1,11 @@
+[server]
+host = "0.0.0.0"  # Listen on all interfaces inside container
+port = 8080
+
+[database]
+host = "mysql"    # Use Docker service name for MySQL
+port = 3306
+username = "tangy_user"
+password = "password"
+database_name = "tangy_mango"
+max_connections = 10
